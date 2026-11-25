@@ -625,7 +625,7 @@ jobs:
         strip -x dist/pvz-total-pizdec
 
         echo "Bundling dependencies..."
-        dylibbundler -of -b -x dist/pvz-portable -d dist/libs -p @executable_path/libs/
+        dylibbundler -of -b -x dist/pvz-total-pizdec -d dist/libs -p @executable_path/libs/
 
         codesign --force --deep -s - dist/pvz-total-pizdec
 

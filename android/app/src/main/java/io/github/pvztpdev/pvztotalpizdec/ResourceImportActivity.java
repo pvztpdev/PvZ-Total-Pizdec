@@ -19,7 +19,7 @@
  * along with PvZ-Portable. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.github.wszqkzqk.pvzportable;
+package io.github.pvztpdev.pvztotalpizdec;
 
 import android.content.Intent;
 import android.net.Uri;
