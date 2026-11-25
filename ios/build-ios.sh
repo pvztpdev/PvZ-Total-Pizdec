@@ -10,7 +10,7 @@ BUILD_TYPE="${1:-Release}"
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BUILD_DIR="$PROJECT_ROOT/build-ios"
 
-echo "=== PvZ-Portable iOS Build ($BUILD_TYPE) ==="
+echo "=== PvZ-Total-Pizdec iOS Build ($BUILD_TYPE) ==="
 
 if [ -z "${VCPKG_ROOT:-}" ]; then
     echo "Error: VCPKG_ROOT is not set. Install vcpkg and set VCPKG_ROOT."
@@ -26,7 +26,7 @@ fi
 mkdir -p "$BUILD_DIR"
 
 # Build game (vcpkg handles all dependencies via manifest mode)
-echo "--- Building PvZ-Portable ---"
+echo "--- Building PvZ-Total-Pizdec ---"
 cmake -B "$BUILD_DIR/game" -S "$PROJECT_ROOT" \
     -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
     -DVCPKG_OVERLAY_TRIPLETS="$PROJECT_ROOT/CMake/triplets" \
@@ -43,7 +43,7 @@ cmake --build "$BUILD_DIR/game" --config "$BUILD_TYPE" -- \
     CODE_SIGNING_ALLOWED=NO
 
 # Create unsigned IPA
-APP_PATH=$(find "$BUILD_DIR/game" -name "pvz-portable.app" -path "*${BUILD_TYPE}*" | head -1)
+APP_PATH=$(find "$BUILD_DIR/game" -name "pvz-total-pizdec.app" -path "*${BUILD_TYPE}*" | head -1)
 if [ -z "$APP_PATH" ]; then
     echo "Warning: .app bundle not found, skipping IPA creation"
 else
@@ -51,9 +51,9 @@ else
     mkdir -p "$IPA_DIR/Payload"
     cp -R "$APP_PATH" "$IPA_DIR/Payload/"
     cd "$IPA_DIR"
-    zip -r -y "$BUILD_DIR/pvz-portable-ios.ipa" Payload/
+    zip -r -y "$BUILD_DIR/pvz-total-pizdec-ios.ipa" Payload/
     rm -rf "$IPA_DIR"
-    echo "IPA created: $BUILD_DIR/pvz-portable-ios.ipa"
+    echo "IPA created: $BUILD_DIR/pvz-total-pizdec-ios.ipa"
 fi
 
 echo "=== iOS Build Complete ==="

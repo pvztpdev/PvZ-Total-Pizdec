@@ -7,9 +7,9 @@
 #   ./wasm/build-wasm.sh --deps     # also build libopenmpt and fetch SDL3_mixer
 #
 # Output:
-#   build-wasm/pvz-portable.html  — the main page
-#   build-wasm/pvz-portable.js    — Emscripten glue
-#   build-wasm/pvz-portable.wasm  — WebAssembly binary
+#   build-wasm/pvz-total-pizdec.html  — the main page
+#   build-wasm/pvz-total-pizdec.js    — Emscripten glue
+#   build-wasm/pvz-total-pizdec.wasm  — WebAssembly binary
 #
 # To serve locally:
 #   python3 -m http.server 8080 --directory build-wasm
@@ -97,10 +97,10 @@ cmake --build "${BUILD_DIR}" -j"${NPROC}"
 
 echo ""
 echo "Build complete! Output files:"
-echo "  ${BUILD_DIR}/pvz-portable.html"
-echo "  ${BUILD_DIR}/pvz-portable.js"
-echo "  ${BUILD_DIR}/pvz-portable.wasm"
+echo "  ${BUILD_DIR}/pvz-total-pizdec.html"
+echo "  ${BUILD_DIR}/pvz-total-pizdec.js"
+echo "  ${BUILD_DIR}/pvz-total-pizdec.wasm"
 echo ""
 echo "To test locally:"
 echo "  python3 -m http.server 8080 --directory ${BUILD_DIR}"
-echo "  Then open http://localhost:8080/pvz-portable.html"
+echo "  Then open http://localhost:8080/pvz-total-pizdec.html"

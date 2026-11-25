@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=PvZ Portable
+Name=PvZ Total Pizdec
 Comment=Community reimplementation of Plants vs. Zombies GOTY — 100% authentic PvZ experience
-Exec=/usr/bin/pvz-portable
-Icon=io.github.wszqkzqk.pvz-portable
+Exec=/usr/bin/pvz-total-pizdec
+Icon=io.github.pvztpdev.pvz-total-pizdec
 Terminal=false
 Type=Application
 Categories=Game;
-StartupWMClass=io.github.wszqkzqk.pvz-portable
-TryExec=/usr/bin/pvz-portable
+StartupWMClass=io.github.pvztpdev.pvz-total-pizdec
+TryExec=/usr/bin/pvz-total-pizdec

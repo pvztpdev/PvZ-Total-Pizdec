@@ -172,7 +172,7 @@ SexyAppBase::SexyAppBase()
 #endif
 
 #ifdef __SWITCH__
-	mResourceDir = "sdmc:/switch/PvZPortable/";
+	mResourceDir = "sdmc:/switch/PvZTotalPizdec/";
 #elif defined(__ANDROID__) && !defined(__TERMUX__)
 	const char* aExtPath = SDL_GetAndroidExternalStoragePath();
 	if (aExtPath)
@@ -3360,7 +3360,7 @@ void SexyAppBase::Init()
 	}
 #elif !defined(__SWITCH__)
 	{
-		char* aPrefPath = SDL_GetPrefPath("io.github.wszqkzqk", "PvZPortable"); // Avoid conflict with official Plants vs. Zombies
+		char* aPrefPath = SDL_GetPrefPath("io.github.pvztpdev", "PvZTotalPizdec"); // Avoid conflict with official Plants vs. Zombies
 		if (aPrefPath)
 		{
 			SetAppDataFolder(aPrefPath);

@@ -122,7 +122,7 @@ public class ResourceImportActivity extends AppCompatActivity {
             dirPicker.launch(null)
         );
         btnExportSave.setOnClickListener(v ->
-            saveExporter.launch("pvz-portable-savedata.zip")
+            saveExporter.launch("pvz-total-pizdec-savedata.zip")
         );
         btnImportSaveZip.setOnClickListener(v ->
             saveZipImporter.launch(new String[]{"application/zip", "application/x-zip-compressed"})

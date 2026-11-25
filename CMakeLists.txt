@@ -241,8 +241,8 @@ elseif (NINTENDO_SWITCH)
 	target_link_libraries(pvz-portable PRIVATE GLESv2 EGL glapi drm_nouveau)
 
 	nx_generate_nacp(pvz-portable.nacp
-		NAME "PvZ Portable"
-		AUTHOR "wszqkzqk, etc., a community-driven port"
+		NAME "PvZ Total Pizdec"
+		AUTHOR "pvztpdev"
 		VERSION "${PVZP_VERSION_PLAIN}"
 	)
 

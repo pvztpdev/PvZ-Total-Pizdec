@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-exec /usr/share/pvz-portable/pvz-portable "$@"
+exec /usr/share/pvz-total-pizdec/pvz-total-pizdec "$@"

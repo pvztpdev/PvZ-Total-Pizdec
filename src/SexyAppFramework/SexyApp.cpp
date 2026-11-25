@@ -57,7 +57,7 @@ SexyApp::SexyApp()
 {
 	gSexyApp = this;
 
-	mDemoPrefix = "pvzp";
+	mDemoPrefix = "pvztp";
 	mDemoFileName = mDemoPrefix + ".dmo";
 	mCompanyName = "Community";
 

@@ -54,7 +54,7 @@ jobs:
       run: |
         chown -R builder:builder .
 
-    - name: Build PvZ-Portable
+    - name: Build PvZ-Total-Pizdec
       run: |
         sudo -u builder --preserve-env=CFLAGS,CXXFLAGS,LDFLAGS bash -lc '
           mkdir build
@@ -62,14 +62,14 @@ jobs:
           cmake --build build
 
           mkdir -p dist
-          cp build/pvz-portable dist/
-          strip dist/pvz-portable
+          cp build/pvz-total-pizdec dist/
+          strip dist/pvz-total-pizdec
         '
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-archlinux
+        name: pvz-total-pizdec-archlinux
         path: dist/
 
   build-linux-static:
@@ -295,7 +295,7 @@ jobs:
         path: ~/pvz-deps
         key: linux-static-deps-lto-v7-${{ env.SDL3_TAG }}-${{ env.SDL3_MIXER_TAG }}-${{ env.OGG_TAG }}-${{ env.VORBIS_TAG }}-${{ env.OPENMPT_TAG }}-${{ env.LIBPNG_VERSION }}-${{ env.JPEG_TURBO_VERSION }}
 
-    - name: Build PvZ-Portable
+    - name: Build PvZ-Total-Pizdec
       run: |
         cmake -G Ninja -B build \
           -DCMAKE_BUILD_TYPE=Release \
@@ -305,13 +305,13 @@ jobs:
         cmake --build build
 
         mkdir -p dist
-        cp build/pvz-portable dist/
-        strip dist/pvz-portable
+        cp build/pvz-total-pizdec dist/
+        strip dist/pvz-total-pizdec
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-linux-static
+        name: pvz-total-pizdec-linux-static
         path: dist/
 
   build-windows-msys2-ucrt64:
@@ -337,7 +337,7 @@ jobs:
           mingw-w64-ucrt-x86_64-sdl3
           mingw-w64-ucrt-x86_64-sdl3-mixer
 
-    - name: Compile PvZ-Portable for Windows
+    - name: Compile PvZ-Total-Pizdec for Windows
       shell: msys2 {0}
       run: |
         mkdir build
@@ -345,13 +345,13 @@ jobs:
         cmake --build build
         
         mkdir -p dist
-        cp build/pvz-portable.exe dist/
-        strip dist/pvz-portable.exe
+        cp build/pvz-total-pizdec.exe dist/
+        strip dist/pvz-total-pizdec.exe
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-windows-msys2-ucrt64
+        name: pvz-total-pizdec-windows-msys2-ucrt64
         path: dist/
 
   build-windows-msvc-x64:
@@ -393,19 +393,19 @@ jobs:
       with:
         vcpkgJsonGlob: vcpkg.json
 
-    - name: Compile PvZ-Portable for Windows (MSVC)
+    - name: Compile PvZ-Total-Pizdec for Windows (MSVC)
       shell: pwsh
       run: |
         cmake -G "Ninja" -B build -DCMAKE_BUILD_TYPE=Release -DCONSOLE=OFF -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows-static
         cmake --build build
 
         New-Item -ItemType Directory -Force -Path dist | Out-Null
-        Copy-Item build/pvz-portable.exe dist/
+        Copy-Item build/pvz-total-pizdec.exe dist/
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-windows-msvc-x64
+        name: pvz-total-pizdec-windows-msvc-x64
         path: dist/
 
   # 32-bit coverage build: catches pointer-size/alignment assumptions.
@@ -450,19 +450,19 @@ jobs:
       with:
         vcpkgJsonGlob: vcpkg.json
 
-    - name: Compile PvZ-Portable for Windows (MSVC)
+    - name: Compile PvZ-Total-Pizdec for Windows (MSVC)
       shell: pwsh
       run: |
         cmake -G "Ninja" -B build -DCMAKE_BUILD_TYPE=Release -DCONSOLE=OFF -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x86-windows-static
         cmake --build build
 
         New-Item -ItemType Directory -Force -Path dist | Out-Null
-        Copy-Item build/pvz-portable.exe dist/
+        Copy-Item build/pvz-total-pizdec.exe dist/
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-windows-msvc-x86
+        name: pvz-total-pizdec-windows-msvc-x86
         path: dist/
 
   # build-switch:
@@ -575,7 +575,7 @@ jobs:
   #         make CONFIG=gcc STATIC_LIB=1 SHARED_LIB=0 DYNLINK=0 \
   #           EXAMPLES=0 OPENMPT123=0 TEST=0 PREFIX=$PORTLIBS_PREFIX install
 
-  #     - name: Build PvZ-Portable for Switch
+  #     - name: Build PvZ-Total-Pizdec for Switch
   #       run: |
   #         source $DEVKITPRO/switchvars.sh
   #         aarch64-none-elf-cmake -G "Unix Makefiles" -S . -B build \
@@ -583,15 +583,15 @@ jobs:
   #           -DCMAKE_CXX_FLAGS_RELEASE=-O2 \
   #           -DCMAKE_PREFIX_PATH="$PORTLIBS_PREFIX"
   #         cmake --build build -j$(nproc)
-  #         aarch64-none-elf-strip build/pvz-portable.elf
+  #         aarch64-none-elf-strip build/pvz-total-pizdec.elf
 
   #     - name: Upload Artifact
   #       uses: actions/upload-artifact@v7
   #       with:
-  #         name: pvz-portable-switch
+  #         name: pvz-total-pizdec-switch
   #         path: |
-  #           build/pvz-portable.nro
-  #           build/pvz-portable.elf
+  #           build/pvz-total-pizdec.nro
+  #           build/pvz-total-pizdec.elf
 
   build-macos:
     name: Build for macOS (aarch64)
@@ -613,7 +613,7 @@ jobs:
           sdl3 \
           sdl3_mixer
 
-    - name: Build PvZ-Portable
+    - name: Build PvZ-Total-Pizdec
       run: |
         mkdir build
         cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
@@ -621,18 +621,18 @@ jobs:
 
         mkdir -p dist
         mkdir -p dist/libs
-        cp build/pvz-portable dist/
-        strip -x dist/pvz-portable
+        cp build/pvz-total-pizdec dist/
+        strip -x dist/pvz-total-pizdec
 
         echo "Bundling dependencies..."
         dylibbundler -of -b -x dist/pvz-portable -d dist/libs -p @executable_path/libs/
 
-        codesign --force --deep -s - dist/pvz-portable
+        codesign --force --deep -s - dist/pvz-total-pizdec
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-macos
+        name: pvz-total-pizdec-macos
         path: dist/
 
   build-android:
@@ -722,12 +722,12 @@ jobs:
     - name: Copy APK
       run: |
         mkdir -p dist
-        find android -name "*.apk" -path "*/release/*" -exec cp {} dist/pvz-portable-android-arm64-v8a.apk \;
+        find android -name "*.apk" -path "*/release/*" -exec cp {} dist/pvz-total-pizdec-android-arm64-v8a.apk \;
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-android
+        name: pvz-total-pizdec-android
         path: dist/
 
   build-ios:
@@ -759,7 +759,7 @@ jobs:
       with:
         vcpkgJsonGlob: vcpkg.json
 
-    - name: Build PvZ-Portable for iOS
+    - name: Build PvZ-Total-Pizdec for iOS
       run: |
         BUILD_DIR=build-ios
 
@@ -780,17 +780,17 @@ jobs:
 
     - name: Create unsigned IPA
       run: |
-        APP_PATH=$(find build-ios -name "pvz-portable.app" -path "*Release*" | head -1)
+        APP_PATH=$(find build-ios -name "pvz-total-pizdec.app" -path "*Release*" | head -1)
         mkdir -p dist/Payload
         cp -R "$APP_PATH" dist/Payload/
         cd dist
-        zip -r -y pvz-portable-ios-arm64.ipa Payload/
+        zip -r -y pvz-total-pizdec-ios-arm64.ipa Payload/
         rm -rf Payload
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-ios
+        name: pvz-total-pizdec-ios
         path: dist/
 
   build-wasm:
@@ -809,26 +809,26 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y ninja-build
 
-    - name: Build PvZ-Portable for WebAssembly
+    - name: Build PvZ-Total-Pizdec for WebAssembly
       run: ./wasm/build-wasm.sh --deps
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v7
       with:
-        name: pvz-portable-wasm
+        name: pvz-total-pizdec-wasm
         path: |
-          build-wasm/pvz-portable.html
-          build-wasm/pvz-portable.js
-          build-wasm/pvz-portable.wasm
+          build-wasm/pvz-total-pizdec.html
+          build-wasm/pvz-total-pizdec.js
+          build-wasm/pvz-total-pizdec.wasm
 
     # Staged only when a deployment will actually happen (tag push or manual run)
     - name: Prepare GitHub Pages Artifact
       if: github.ref_type == 'tag' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
       run: |
         mkdir -p pages
-        cp build-wasm/pvz-portable.html build-wasm/pvz-portable.js build-wasm/pvz-portable.wasm pages/
+        cp build-wasm/pvz-total-pizdec.html build-wasm/pvz-total-pizdec.js build-wasm/pvz-total-pizdec.wasm pages/
         # Land /PvZ-Portable/ on the game page directly
-        printf '<!doctype html><meta http-equiv="refresh" content="0; url=pvz-portable.html">\n' > pages/index.html
+        printf '<!doctype html><meta http-equiv="refresh" content="0; url=pvz-total-pizdec.html">\n' > pages/index.html
 
     - name: Upload GitHub Pages Artifact
       if: github.ref_type == 'tag' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
@@ -870,37 +870,37 @@ jobs:
         mkdir release_files
 
         echo "Preparing Arch Linux file..."
-        chmod +x artifacts/pvz-portable-archlinux/pvz-portable
-        mv artifacts/pvz-portable-archlinux/pvz-portable release_files/pvz-portable-archlinux-x86_64
+        chmod +x artifacts/pvz-total-pizdec-archlinux/pvz-total-pizdec
+        mv artifacts/pvz-total-pizdec-archlinux/pvz-total-pizdec release_files/pvz-total-pizdec-archlinux-x86_64
 
         echo "Preparing Linux static file..."
-        chmod +x artifacts/pvz-portable-linux-static/pvz-portable
-        mv artifacts/pvz-portable-linux-static/pvz-portable release_files/pvz-portable-linux-static-x86_64
+        chmod +x artifacts/pvz-total-pizdec-linux-static/pvz-total-pizdec
+        mv artifacts/pvz-total-pizdec-linux-static/pvz-total-pizdec release_files/pvz-total-pizdec-linux-static-x86_64
 
         echo "Preparing Windows MSVC x64 file..."
-        mv artifacts/pvz-portable-windows-msvc-x64/pvz-portable.exe release_files/pvz-portable-windows-msvc-x64-static.exe
+        mv artifacts/pvz-total-pizdec-windows-msvc-x64/pvz-total-pizdec.exe release_files/pvz-total-pizdec-windows-msvc-x64-static.exe
 
         echo "Preparing Windows MSVC x86 file..."
-        mv artifacts/pvz-portable-windows-msvc-x86/pvz-portable.exe release_files/pvz-portable-windows-msvc-x86-static.exe
+        mv artifacts/pvz-total-pizdec-windows-msvc-x86/pvz-total-pizdec.exe release_files/pvz-total-pizdec-windows-msvc-x86-static.exe
 
         echo "Preparing Windows MSYS2 file..."
-        mv artifacts/pvz-portable-windows-msys2-ucrt64/pvz-portable.exe release_files/pvz-portable-windows-ucrt64-static.exe
+        mv artifacts/pvz-total-pizdec-windows-msys2-ucrt64/pvz-total-pizdec.exe release_files/pvz-total-pizdec-windows-ucrt64-static.exe
 
         echo "Preparing macOS file..."
-        cd artifacts/pvz-portable-macos
-        chmod +x pvz-portable
-        zip -r -y ../../release_files/pvz-portable-macos-aarch64.zip .
+        cd artifacts/pvz-total-pizdec-macos
+        chmod +x pvz-total-pizdec
+        zip -r -y ../../release_files/pvz-total-pizdec-macos-aarch64.zip .
         cd ../..
 
         echo "Preparing Android file..."
-        mv artifacts/pvz-portable-android/pvz-portable-android-arm64-v8a.apk release_files/pvz-portable-android-arm64-v8a.apk
+        mv artifacts/pvz-total-pizdec-android/pvz-total-pizdec-android-arm64-v8a.apk release_files/pvz-total-pizdec-android-arm64-v8a.apk
 
         echo "Preparing iOS file..."
-        mv artifacts/pvz-portable-ios/pvz-portable-ios-arm64.ipa release_files/pvz-portable-ios-arm64.ipa
+        mv artifacts/pvz-total-pizdec-ios/pvz-total-pizdec-ios-arm64.ipa release_files/pvz-total-pizdec-ios-arm64.ipa
 
         echo "Preparing WebAssembly file..."
-        cd artifacts/pvz-portable-wasm
-        zip -r ../../release_files/pvz-portable-wasm.zip .
+        cd artifacts/pvz-total-pizdec-wasm
+        zip -r ../../release_files/pvz-total-pizdec-wasm.zip .
         cd ../..
 
         echo "Final files:"
@@ -921,7 +921,7 @@ jobs:
     container:
       image: archlinux:base-devel
     env:
-      AUR_PACKAGE: pvz-portable
+      AUR_PACKAGE: pvz-total-pizdec
     steps:
       - name: Install dependencies
         run: |

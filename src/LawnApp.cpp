@@ -138,11 +138,11 @@ LawnApp::LawnApp()
 	mSfxVolume = 0.5525;
 	mAutoStartLoadingThread = false;
 	mDebugKeysEnabled = false;
-	mProdName = "io.github.wszqkzqk.pvz-portable";
+	mProdName = "io.github.pvztpdev.pvz-total-pizdec";
 	mProductVersion = PVZP_VERSION;
 	mBuildNum = PVZP_BUILD_NUMBER;
 	mCommitDate = PVZP_COMMIT_DATE;
-	std::string aTitleName = "PvZ Portable";
+	std::string aTitleName = "PvZ Total Pizdec";
 	mTitle = aTitleName;
 	mCustomCursorsEnabled = false;
 	mPlayerInfo = nullptr;
