@@ -633,19 +633,19 @@ void Board::PickZombieWaves()
 		int& aZombiePoints = aZombiePicker.mZombiePoints;
 		if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_LAST_STAND)
 		{
-			aZombiePoints = (mChallenge->mSurvivalStage * GetNumWavesPerSurvivalStage() + aWave + 10) * 2 / 5 + 1;
+			aZombiePoints = (mChallenge->mSurvivalStage * GetNumWavesPerSurvivalStage() + aWave + 10) * 2 / 4 + 6;
 		}
 		else if (mApp->IsSurvivalMode() && mChallenge->mSurvivalStage > 0)
 		{
-			aZombiePoints = (mChallenge->mSurvivalStage * GetNumWavesPerSurvivalStage() + aWave) * 2 / 5 + 1;
+			aZombiePoints = (mChallenge->mSurvivalStage * GetNumWavesPerSurvivalStage() + aWave) * 2 / 4 + 6;
 		}
 		else if (mApp->IsAdventureMode() && mApp->HasFinishedAdventure() && mLevel != 5)
 		{
-			aZombiePoints = aWave * 2 / 5 + 1;
+			aZombiePoints = aWave * 2 / 4 + 6;
 		}
 		else
 		{
-			aZombiePoints = aWave / 3 + 1;
+			aZombiePoints = aWave / 2 + 6;
 		}
 
 		if (aIsFlagWave)
@@ -3203,6 +3203,9 @@ void Board::UpdateToolTip(const HitResult* theHitResult)
 	int aMouseX = mApp->mWidgetManager->mLastMouseX - mX;
 	int aMouseY = mApp->mWidgetManager->mLastMouseY - mY;
 
+	float aMouseXSDL3 = mApp->mWidgetManager->mLastMouseX - mX;
+	float aMouseYSDL3 = mApp->mWidgetManager->mLastMouseY - mY;
+
 	if (mApp->mGameScene == GameScenes::SCENE_LEVEL_INTRO)
 	{
 		if (!mCutScene->mSeedChoosing)
@@ -3270,6 +3273,42 @@ void Board::UpdateToolTip(const HitResult* theHitResult)
 
 		return;
 	}
+	else if (mApp->mGameScene == GameScenes::SCENE_PLAYING && (SDL_GetMouseState(&aMouseXSDL3, &aMouseYSDL3) & SDL_BUTTON_MASK(SDL_BUTTON_RIGHT)))
+    {
+        Zombie* aZombie = ZombieHitTest(aMouseX, aMouseY);
+
+        if (aZombie == nullptr)
+        {
+            mToolTip->mVisible = false;
+            return;
+        }
+
+        std::string aZombieName = std::format("[{}]", gZombieDefs[aZombie->mZombieType].mZombieName);
+
+        std::string aBodyHealthTooltip = aZombie->mBodyHealth > 0 ? "Body: " + std::to_string(aZombie->mBodyHealth) + "/" + std::to_string(aZombie->mBodyMaxHealth) + " " : "";
+
+        std::string aHelmHealthTooltip = aZombie->mHelmHealth > 0 ? "Helm: " + std::to_string(aZombie->mHelmHealth) + "/" + std::to_string(aZombie->mHelmMaxHealth) + " " : "";
+
+        std::string aShieldHealthTooltip = aZombie->mShieldHealth > 0 ? "Shield: " + std::to_string(aZombie->mShieldHealth) + "/" + std::to_string(aZombie->mShieldMaxHealth) + " " : "";
+
+        std::string aFlyingHealthTooltip = aZombie->mFlyingHealth > 0 ? "Flying: " + std::to_string(aZombie->mFlyingHealth) + "/" + std::to_string(aZombie->mFlyingMaxHealth) + " " : "";
+
+        int32_t aZombieHealth = aZombie->mBodyHealth + aZombie->mHelmHealth + aZombie->mShieldHealth + aZombie->mFlyingHealth;
+        int32_t aZombieMaxHealth = aZombie->mBodyMaxHealth + aZombie->mHelmMaxHealth + aZombie->mShieldMaxHealth + aZombie->mFlyingMaxHealth;
+        std::string aZombieHealthTooltip = aZombie->mBodyHealth > 0 ? "Zombie: " + std::to_string(aZombieHealth) + "/" + std::to_string(aZombieMaxHealth) + " " : "";
+
+        mToolTip->SetTitle(aZombieName);
+        mToolTip->SetLabel(aBodyHealthTooltip + aHelmHealthTooltip + aShieldHealthTooltip + aFlyingHealthTooltip + aZombieHealthTooltip);
+        mToolTip->SetWarningText("");
+
+        mToolTip->mX = aMouseX;
+        mToolTip->mY = aMouseY;
+
+        mToolTip->mVisible = true;
+        mToolTip->mCenter = false;
+
+        return;
+    }
 
 	if (!CanInteractWithBoardButtons())
 	{

@@ -46,7 +46,7 @@
 #include <format>
 
 constinit const PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES] = {
-	{ .mSeedType = SeedType::SEED_PEASHOOTER,        .mPlantImage = nullptr, .mReanimationType = ReanimationType::REANIM_PEASHOOTER,    .mPacketIndex = 0,  .mSeedCost = 100, .mRefreshTime = 750,    .mSubClass = PlantSubClass::SUBCLASS_SHOOTER, .mLaunchRate = 150,  .mPlantName = "PEASHOOTER" },
+	{ .mSeedType = SeedType::SEED_PEASHOOTER,        .mPlantImage = nullptr, .mReanimationType = ReanimationType::REANIM_PEASHOOTER,    .mPacketIndex = 0,  .mSeedCost = 100, .mRefreshTime = 875,   .mSubClass = PlantSubClass::SUBCLASS_SHOOTER,  .mLaunchRate = 155,  .mPlantName = "PEASHOOTER" },
 	{ .mSeedType = SeedType::SEED_SUNFLOWER,         .mPlantImage = nullptr, .mReanimationType = ReanimationType::REANIM_SUNFLOWER,     .mPacketIndex = 1,  .mSeedCost = 50,  .mRefreshTime = 750,    .mSubClass = PlantSubClass::SUBCLASS_NORMAL,  .mLaunchRate = 2500, .mPlantName = "SUNFLOWER" },
 	{ .mSeedType = SeedType::SEED_CHERRYBOMB,        .mPlantImage = nullptr, .mReanimationType = ReanimationType::REANIM_CHERRYBOMB,    .mPacketIndex = 3,  .mSeedCost = 150, .mRefreshTime = 5000,   .mSubClass = PlantSubClass::SUBCLASS_NORMAL,  .mLaunchRate = 0,    .mPlantName = "CHERRY_BOMB" },
 	{ .mSeedType = SeedType::SEED_WALLNUT,           .mPlantImage = nullptr, .mReanimationType = ReanimationType::REANIM_WALLNUT,       .mPacketIndex = 2,  .mSeedCost = 50,  .mRefreshTime = 3000,   .mSubClass = PlantSubClass::SUBCLASS_NORMAL,  .mLaunchRate = 0,    .mPlantName = "WALL_NUT" },
@@ -157,6 +157,9 @@ void Plant::PlantInitialize(int theGridX, int theGridY, SeedType theSeedType, Se
 	mLaunchRate = aPlantDef.mLaunchRate;
 	mSubclass = aPlantDef.mSubClass;
 	mRenderOrder = CalcRenderOrder();
+	
+	if (mSeedType == SeedType::SEED_PEASHOOTER) 					{ mRandomProjectile = RandRangeInt(0, 2); }
+    else                                        					{ mRandomProjectile = 0; }
 
 	Reanimation* aBodyReanim = nullptr;
 	if (aPlantDef.mReanimationType != ReanimationType::REANIM_NONE)
@@ -3284,7 +3287,7 @@ void Plant::UpdateShooting()
 		{
 			Fire(nullptr, mRow, PlantWeapon::WEAPON_SECONDARY);
 		}
-		else if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT || mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON)
+		else if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT || mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON || (mSeedType == SeedType::SEED_PEASHOOTER && mRandomProjectile == 1))
 		{
 			PlantWeapon aPlantWeapon = PlantWeapon::WEAPON_PRIMARY;
 			if (mState == PlantState::STATE_KERNELPULT_BUTTER)
@@ -4539,6 +4542,21 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
 		aProjectileType = ProjectileType::PROJECTILE_BUTTER;
 	}
 
+	if (mRandomProjectile == 1)
+	{
+		if (mSeedType == SeedType::SEED_PEASHOOTER)
+		{
+			aProjectileType = ProjectileType::PROJECTILE_CABBAGE;
+		}
+	}
+	else if (mRandomProjectile == 2)
+	{
+		if (mSeedType == SeedType::SEED_PEASHOOTER)
+		{
+			aProjectileType = ProjectileType::PROJECTILE_BUTTER;
+		}
+	}
+
 	mApp->PlayFoley(FoleyType::FOLEY_THROW);
 	if (mSeedType == SeedType::SEED_SNOWPEA || mSeedType == SeedType::SEED_WINTERMELON)
 	{
@@ -4679,7 +4697,8 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
 	aProjectile->mDamageRangeFlags = GetDamageRangeFlags(thePlantWeapon);
 
 	if (mSeedType == SeedType::SEED_CABBAGEPULT || mSeedType == SeedType::SEED_KERNELPULT ||
-		mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON)
+		mSeedType == SeedType::SEED_MELONPULT || mSeedType == SeedType::SEED_WINTERMELON  || 
+		(mSeedType == SeedType::SEED_PEASHOOTER && mRandomProjectile == 1))
 	{
 		float aRangeX, aRangeY;
 		if (theTargetZombie)
@@ -4764,6 +4783,21 @@ void Plant::Fire(Zombie* theTargetZombie, int theRow, PlantWeapon thePlantWeapon
 		aProjectile->mVelZ = -8.0f;
 		aProjectile->mCobTargetX = mTargetX - 40;
 		aProjectile->mCobTargetRow = mBoard->PixelToGridYKeepOnBoard(mTargetX, mTargetY);
+	}
+
+	if (mRandomProjectile == 1)
+	{
+		if (mSeedType == SeedType::SEED_PEASHOOTER)
+		{
+			mRandomProjectile = RandRangeInt(0, 2);
+		}
+	}
+	else if (mRandomProjectile == 2)
+	{
+		if (mSeedType == SeedType::SEED_PEASHOOTER)
+		{
+			mRandomProjectile = RandRangeInt(0, 2);
+		}
 	}
 }
 
